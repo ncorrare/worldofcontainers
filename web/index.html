@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title>A world of containers</title>
+		<link rel="stylesheet" media="all" href="css/jquery-jvectormap-2.0.3.css"/>
+		<script src="js/jquery-1.8.2.min.js"></script>
+		<script src="js/jquery-jvectormap-2.0.3.min.js"></script>
+		<script src="js/jquery-jvectormap-world-mill-en.js"></script>
+	</head>
+	<body>
+		<div id="map" style="width: 720px; height: 400px"></div>
+		<script>
+			//@code_start
+			$(function(){
+				map = new jvm.Map({
+					map: 'world_mill_en',
+					container: $('#map'),
+					scaleColors: ['#C8EEFF', '#0071A4'],
+					normalizeFunction: 'polynomial',
+					hoverOpacity: 0.7,
+					regionsSelectable: true,
+					regionsSelectableOne: true,
+					hoverColor: false,
+					markerStyle: {
+						initial: {
+							fill: '#F8E23B',
+							stroke: '#383f47'
+						}
+					},
+					backgroundColor: '#383f47',
+
+					onRegionTipShow: function(event, label, code){
+						  url="http://localhost:4567/cc/"+code+"/info"
+						  $.getJSON( url, function(data) {
+							  gdp = data['gdp']
+							  population = data['pop']
+						  } );
+						  label.html(
+
+						  '<b>'+label.html()+'</b></br>'+'<b>GDP: </b>'+gdp+'</br><b>Population: </b>'+population
+						        );
+						},
+					onRegionSelected: function(e, code, isSelected, selectedRegions){
+						if (isSelected) {
+							region = code
+							url = "http://localhost:4567/cc/"+region+"/cities"
+							$.getJSON( url, function( data ) {
+								$.each(data, function( key, val) {
+									map.addMarker(val['name'], { 'latLng': [ val['latitude'], val['longitude']], 'name': val['name']}, [[ val['latitude'], val['longitude']]])
+								});
+
+							});
+						}
+						else
+						{ map.removeAllMarkers()}},
+					series: {
+						markers: [{
+							attribute: 'fill',
+							scale: ['#FEE5D9', '#A50F15'],
+					}]},
+					markers: [
+					]
+				});
+			});
+			//@code_end
+		</script>
+	</body>
+</html>

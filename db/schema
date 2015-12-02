@@ -1,0 +1,1 @@
+curl https://raw.githubusercontent.com/bahar/WorldCityLocations/master/World_Cities_Location_table.sql | mysql -uroot world
