@@ -31,12 +31,13 @@
 					onRegionTipShow: function(event, label, code){
 						  url="http://localhost:4567/cc/"+code+"/info"
 						  $.getJSON( url, function(data) {
-							  gdp = data['gdp']
+							  capital = data['capital']
 							  population = data['pop']
+							  status = data['status']
 						  } );
 						  label.html(
 
-						  '<b>'+label.html()+'</b></br>'+'<b>GDP: </b>'+gdp+'</br><b>Population: </b>'+population
+						  '<b>'+label.html()+'</b></br>'+'<b>Capital: </b>'+capital+'</br><b>Population: </b>'+population+'</br><b>Status: </b>'+status
 						        );
 						},
 					onRegionSelected: function(e, code, isSelected, selectedRegions){

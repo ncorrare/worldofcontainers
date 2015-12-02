@@ -4,9 +4,12 @@ require 'fileutils'
 require 'tempfile'
 require 'mysql2'
 require 'json'
+require 'rest-client'
+require 'memcached'
 
 begin
 	con = Mysql2::Client.new(:host => '127.0.0.1', :username => 'root', :password => 'cpe1704tke', :database => 'world')
+	cache = Memcached.new("localhost:11211")
 	# HTTP GET verb to retrieve a specific city. Returns 404 if item is not present.
 	get '/countries/:country/cities/:city' do 
 		sql = "SELECT * FROM location WHERE country=\"#{params['country']}\" and city=\"#{params['city']}\""
@@ -75,12 +78,23 @@ begin
 	# HTTP GET verb to retrieve a specific item. Returns 404 if item is not present.
 	get '/cc/:country/info' do 
 		content_type :json
+		begin
+			info = cache.get params['country']
+			result = { "capital" => info['capital'], "pop" => info['pop'], "status" => "Cached" }
+			"result"
+		rescue Memcached::Error
+
+			response = RestClient.get "https://restcountries.eu/rest/v1/alpha?codes=#{params['country']}"
+			info = JSON.parse(response)
+
 		#cities = Array.new
 		#rs.each do |row|
 		#	city = { row['city'] => { 'latitude' => row['latitude'], 'longitude' => row['longitude'], 'altitude' => row['altitude'] } }
 		#	cities << city
 		#end
-		result = { "gdp" => 10, "pop" => 15 }  
+			result = { "capital" => info.first['capital'], "pop" => info.first['population'], "status" => "Retrieved" }  
+			cache.set params['country'], result
+		end
 		json=JSON.pretty_generate(result)
 		"#{json}"
 
