@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'fileutils'
+gem 'tempfile'
+gem 'mysql2'
+gem 'json'
+gem 'rest-client'
+gem 'memcached'
+gem 'yaml'
+gem 'sinatra'
