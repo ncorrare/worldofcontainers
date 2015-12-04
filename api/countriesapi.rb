@@ -13,7 +13,7 @@ set :bind, '0.0.0.0'
 begin
 	CONFIG = YAML.load_file("config.yaml") unless defined? CONFIG
 	con = Mysql2::Client.new(:host => CONFIG['db']['host'], :username => CONFIG['db']['user'], :password => CONFIG['db']['password'], :database => CONFIG['db']['name'])
-	cache = Memcached.new("#{CONFIG['memcache']['host']}:11211")
+	cache = Memcached.new("#{CONFIG['memcache']['host']}")
 	# HTTP GET verb to retrieve a specific city. Returns 404 if item is not present.
 	get '/countries/:country/cities/:city' do 
 		sql = "SELECT * FROM location WHERE country=\"#{params['country']}\" and city=\"#{params['city']}\""

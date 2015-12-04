@@ -12,7 +12,8 @@ RUN apt-get update && \
     RUN curl -O $APP_HOME/Gemfile https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/Gemfile 
     RUN bundle install
     RUN curl -O $APP_HOME/api.rb https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/countriesapi.rb
-    COPY /tmp/config.yaml $APP_HOME/config.yaml
+    VOLUME /config
+    COPY /config/config.yaml $APP_HOME/config.yaml
     # Start server
     ENV PORT 3000
     EXPOSE 3000
