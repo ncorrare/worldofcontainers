@@ -9,13 +9,11 @@ RUN apt-get update && \
     ENV HOME /root
     RUN mkdir $APP_HOME
     WORKDIR $APP_HOME
-    COPY Gemfile* $APP_HOME/
+    RUN curl -O $APP_HOME/Gemfile https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/Gemfile 
     RUN bundle install
-
-    # Upload source
-    COPY . $APP_HOME
-
+    RUN curl -O $APP_HOME/api.rb https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/countriesapi.rb
+    COPY /tmp/config.yaml $APP_HOME/config.yaml
     # Start server
     ENV PORT 3000
     EXPOSE 3000
-    CMD ["ruby", "countriesapi.rb"]
+    CMD ["ruby", "api.rb"]
