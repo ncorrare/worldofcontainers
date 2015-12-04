@@ -8,6 +8,8 @@ require 'rest-client'
 require 'memcached'
 require 'yaml'
 
+set :bind, '0.0.0.0'
+
 begin
 	CONFIG = YAML.load_file("config.yaml") unless defined? CONFIG
 	con = Mysql2::Client.new(:host => CONFIG['db']['host'], :username => CONFIG['db']['user'], :password => CONFIG['db']['password'], :database => CONFIG['db']['name'])

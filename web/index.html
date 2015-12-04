@@ -5,6 +5,7 @@
 		<script src="js/jquery-1.8.2.min.js"></script>
 		<script src="js/jquery-jvectormap-2.0.3.min.js"></script>
 		<script src="js/jquery-jvectormap-world-mill-en.js"></script>
+		<script src="js/config.js"></script>
 	</head>
 	<body>
 		<div id="map" style="width: 720px; height: 400px"></div>
@@ -29,7 +30,7 @@
 					backgroundColor: '#383f47',
 
 					onRegionTipShow: function(event, label, code){
-						  url="http://localhost:4567/cc/"+code+"/info"
+						  url="http://"+infoapihost+"/cc/"+code+"/info"
 						  $.getJSON( url, function(data) {
 							  capital = data['capital']
 							  population = data['pop']
@@ -43,7 +44,7 @@
 					onRegionSelected: function(e, code, isSelected, selectedRegions){
 						if (isSelected) {
 							region = code
-							url = "http://localhost:4567/cc/"+region+"/cities"
+							url = "http://"+citiesapihost+"/cc/"+region+"/cities"
 							$.getJSON( url, function( data ) {
 								$.each(data, function( key, val) {
 									map.addMarker(val['name'], { 'latLng': [ val['latitude'], val['longitude']], 'name': val['name']}, [[ val['latitude'], val['longitude']]])
