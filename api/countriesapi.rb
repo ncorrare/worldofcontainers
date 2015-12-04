@@ -6,10 +6,12 @@ require 'mysql2'
 require 'json'
 require 'rest-client'
 require 'memcached'
+require 'yaml'
 
 begin
-	con = Mysql2::Client.new(:host => '127.0.0.1', :username => 'root', :password => 'cpe1704tke', :database => 'world')
-	cache = Memcached.new("localhost:11211")
+	CONFIG = YAML.load_file("config.yaml") unless defined? CONFIG
+	con = Mysql2::Client.new(:host => CONFIG['db']['host'], :username => CONFIG['db']['user'], :password => CONFIG['db']['password'], :database => CONFIG['db']['name'])
+	cache = Memcached.new("#{CONFIG['memcache']['host']}:11211")
 	# HTTP GET verb to retrieve a specific city. Returns 404 if item is not present.
 	get '/countries/:country/cities/:city' do 
 		sql = "SELECT * FROM location WHERE country=\"#{params['country']}\" and city=\"#{params['city']}\""
@@ -122,7 +124,7 @@ begin
 		end
 	end
 
-rescue Mysql::Error => e
+rescue Mysql2::Error => e
 	puts e.errno
 	puts e.error
 
