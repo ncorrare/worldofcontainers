@@ -2,7 +2,7 @@ FROM ruby:latest
 MAINTAINER Nicolas Corrarello <nicolas@corrarello.com>
 
 RUN apt-get update && \
-    apt-get install -y net-tools
+    apt-get install -y net-tools libsasl2-dev
 
     # Install gems
     ENV APP_HOME /app
