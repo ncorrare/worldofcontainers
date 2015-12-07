@@ -9,9 +9,9 @@ RUN apt-get update && \
     ENV HOME /root
     RUN mkdir $APP_HOME
     WORKDIR $APP_HOME
-    RUN curl -O $APP_HOME/Gemfile https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/Gemfile 
+    RUN curl https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/Gemfile > $APP_HOME/Gemfile 
     RUN bundle install
-    RUN curl -O $APP_HOME/api.rb https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/countriesapi.rb
+    RUN curl https://raw.githubusercontent.com/ncorrare/worldofcontainers/1.0.0/api/countriesapi.rb > $APP_HOME/api.rb 
     VOLUME /config
     COPY /config/config.yaml $APP_HOME/config.yaml
     # Start server
