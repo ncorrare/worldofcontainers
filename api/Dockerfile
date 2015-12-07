@@ -12,7 +12,7 @@ RUN apt-get update && \
     RUN curl https://raw.githubusercontent.com/ncorrare/worldofcontainers/master/api/Gemfile > $APP_HOME/Gemfile 
     RUN bundle install
     RUN curl https://raw.githubusercontent.com/ncorrare/worldofcontainers/master/api/countriesapi.rb > $APP_HOME/api.rb 
-    MKDIR /config
+    RUN mkdir /config
     VOLUME /config
     COPY /config/config.yaml $APP_HOME/config.yaml
     # Start server
