@@ -1,7 +1,5 @@
 #Extremely Simple API with three basic verbs. 
 require 'sinatra'
-require 'fileutils'
-require 'tempfile'
 require 'mysql2'
 require 'json'
 require 'rest-client'
@@ -11,7 +9,7 @@ require 'yaml'
 set :bind, '0.0.0.0'
 
 begin
-	CONFIG = YAML.load_file("config.yaml") unless defined? CONFIG
+	CONFIG = YAML.load_file("/config/config.yaml") unless defined? CONFIG
 	con = Mysql2::Client.new(:host => CONFIG['db']['host'], :username => CONFIG['db']['user'], :password => CONFIG['db']['password'], :database => CONFIG['db']['name'])
 	cache = Memcached.new("#{CONFIG['memcache']['host']}")
 	# HTTP GET verb to retrieve a specific city. Returns 404 if item is not present.
