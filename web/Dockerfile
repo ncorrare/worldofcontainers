@@ -1,4 +1,4 @@
-FROM httpd:2.4
+FROM httpd:latest
 RUN mkdir /app
 RUN mkdir /config
 RUN git clone https://github.com/ncorrare/worldofcontainers.git /app
