@@ -1,4 +1,4 @@
-FROM ruby:2.2.1
+FROM ruby:2.1.7
 MAINTAINER Nicolas Corrarello <nicolas@corrarello.com>
 
 RUN apt-get update && \
